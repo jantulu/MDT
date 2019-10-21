@@ -1,6 +1,7 @@
 
 $DeploymentFolder = "D:\Deployment"
 $oscdimgPath = "c:\windows\system32\oscdimg.exe"
+$ADKArchitecture = 'amd64'
 $OSArchitecture = "x64"
 $date = get-date -UFormat "%m-%y"
 
@@ -16,10 +17,11 @@ Catch{
 if (((Test-Path $oscdimgPath) -ne $true) -or ($lastestUpdateModuleInstalled -eq $false)){
     if ((Test-Path $oscdimgPath) -ne $true){
         # Attempt to find oscdimgpath if the defined path is not valid.
-        $tryToFind = Get-ChildItem ("C:\Program Files*\Windows Kits\*\Assessment and Deployment Kit\Deployment Tools\" + $OSArchitecture + "\Oscdimg\") -Filter oscdimg.exe
+        $tryToFind = Get-ChildItem ("C:\Program Files*\Windows Kits\*\Assessment and Deployment Kit\Deployment Tools\" + $ADKArchitecture + "\Oscdimg\") -Filter oscdimg.exe -Recurse
         if ($tryToFind.count -ne 1){
             Write-Error "Error: oscdimg not found at $oscdimgPath, Install Windows Deployment Tools, update the path, and try again."
         }else{
+            Write-Output "NOTICE: oscdimg.exe not found at defined location, using executable found at $trytofind.exe"
             $oscdimgPath = $tryToFind.FullName
         }
     }
@@ -199,5 +201,6 @@ if (((Test-Path $oscdimgPath) -ne $true) -or ($lastestUpdateModuleInstalled -eq 
     remove-item -path "$($BaseFolder)\servicing" -Recurse
     remove-item -path "$($BaseFolder)\updates" -Recurse
     remove-item -path "$($BaseFolder)\dotnet" -Recurse
+    
     }
 }
