@@ -21,7 +21,7 @@ if (((Test-Path $oscdimgPath) -ne $true) -or ($lastestUpdateModuleInstalled -eq 
         if ($tryToFind.count -ne 1){
             Write-Error "Error: oscdimg not found at $oscdimgPath, Install Windows Deployment Tools, update the path, and try again."
         }else{
-            Write-Output "NOTICE: oscdimg.exe not found at defined location, using executable found at $trytofind.exe"
+            Write-Output "NOTICE: oscdimg.exe not found at defined location, using executable found at $($trytofind.fullname)"
             $oscdimgPath = $tryToFind.FullName
         }
     }
