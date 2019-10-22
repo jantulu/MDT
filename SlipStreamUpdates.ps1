@@ -188,7 +188,7 @@ if (((Test-Path $oscdimgPath) -ne $true) -or ($lastestUpdateModuleInstalled -eq 
     Write-Host "Dismounting the ISO $($ISO.Name)" -BackgroundColor Green -ForegroundColor Black
     Dismount-DiskImage  "$($BaseFolder)\$($ISOName.Name)"
     
-    
+    # Clean up the ISO generated (no need to keep it around.)
     remove-item "$($BaseFolder)\$($ISOName.Name)"
     
     # Remove C:\WIM folder after import.
