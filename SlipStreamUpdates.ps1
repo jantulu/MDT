@@ -71,7 +71,7 @@ $OSSlipstreamList = @(
     
     
     # Purge the folder contents before downloading, don't want multiple CU/Serv stacks
-    If(!(test-path "$($BaseFolder)\servicing"){ 
+    If(!(test-path "$($BaseFolder)\servicing")){ 
         # Clean up/Initialize Folder Structure if needed.
         remove-item -path "$($BaseFolder)\servicing" -Recurse
         remove-item -path "$($BaseFolder)\updates" -Recurse
