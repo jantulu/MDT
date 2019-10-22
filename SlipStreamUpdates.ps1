@@ -30,12 +30,14 @@ if (((Test-Path $oscdimgPath) -ne $true) -or ($lastestUpdateModuleInstalled -eq 
     }
     
 }else{
-    $OSSlipstreamList = @(
+
+    ## Declare your OS's here, and Build ID's.  Datacenter Desktop Version is Index 4, Win 10 Pro is Index 6.  
+$OSSlipstreamList = @(
     @{
-    OperatingSystem = 'Windows Server 2019 Datacenter'
-    Build = '1809'
-    Index = 4
-    IncludeDotNet = $False
+        OperatingSystem = 'Windows Server 2019 Datacenter'
+        Build = '1809'
+        Index = 4
+        IncludeDotNet = $False
     },
     @{
         OperatingSystem = 'Windows Server 2016 Datacenter'
@@ -49,7 +51,7 @@ if (((Test-Path $oscdimgPath) -ne $true) -or ($lastestUpdateModuleInstalled -eq 
         Index = 6
         IncludeDotNet = $True
     }
-    )
+)
     Foreach ($slipstream in $OSSlipStreamList) {
         $BaseFolder = "D:\slipstream\$($slipstream.OperatingSystem)"
         $UpdatesPath = "$($BaseFolder)\updates\*"
@@ -69,14 +71,15 @@ if (((Test-Path $oscdimgPath) -ne $true) -or ($lastestUpdateModuleInstalled -eq 
     
     
     # Purge the folder contents before downloading, don't want multiple CU/Serv stacks
-    remove-item -path "$($BaseFolder)\servicing" -Recurse
-    remove-item -path "$($BaseFolder)\updates" -Recurse
-    remove-item -path "$($BaseFolder)\dotnet" -Recurse
-    
-    New-Item -Path "$($BaseFolder)" -Name servicing -ItemType Directory | Out-Null
-    New-Item -Path "$($BaseFolder)" -Name updates -ItemType Directory | Out-Null
-    New-Item -Path "$($BaseFolder)" -Name dotNet -ItemType Directory | Out-Null
-    
+    If(!(test-path "$($BaseFolder)\servicing"){ 
+        # Clean up/Initialize Folder Structure if needed.
+        remove-item -path "$($BaseFolder)\servicing" -Recurse
+        remove-item -path "$($BaseFolder)\updates" -Recurse
+        remove-item -path "$($BaseFolder)\dotnet" -Recurse
+        New-Item -Path "$($BaseFolder)" -Name servicing -ItemType Directory | Out-Null
+        New-Item -Path "$($BaseFolder)" -Name updates -ItemType Directory | Out-Null
+        New-Item -Path "$($BaseFolder)" -Name dotNet -ItemType Directory | Out-Null
+    }
     # Latest CU
     set-location -path $BaseFolder\Updates
     Get-LatestCumulativeUpdate -version $OSVersion| Where {$_.architecture -eq $OSArchitecture} |  save-latestupdate
