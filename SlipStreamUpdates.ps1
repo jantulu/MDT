@@ -189,7 +189,7 @@ if (((Test-Path $oscdimgPath) -ne $true) -or ($lastestUpdateModuleInstalled -eq 
     Dismount-DiskImage  "$($BaseFolder)\$($ISOName.Name)"
     
     
-    #remove-item "$($BaseFolder)\$($ISOName.Name)"
+    remove-item "$($BaseFolder)\$($ISOName.Name)"
     
     # Remove C:\WIM folder after import.
     Set-Location -Path $BaseFolder
