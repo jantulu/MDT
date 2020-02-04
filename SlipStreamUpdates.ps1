@@ -47,7 +47,7 @@ $OSSlipstreamList = @(
     }
     @{
         OperatingSystem = 'Windows 10 Professional'
-        Build = '1903'
+        Build = '1909'
         Index = 6
         IncludeDotNet = $True
     }
